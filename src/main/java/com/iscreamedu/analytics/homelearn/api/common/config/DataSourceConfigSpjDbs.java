@@ -16,7 +16,7 @@ public class DataSourceConfigSpjDbs {
 
     //dataSource 생성
     @Bean(name = "spjdbsDataSource")
-    @ConfigurationProperties("spring.datasource3.hikari.spjdbs")
+    @ConfigurationProperties("spring.datasource.hikari.spjdbs")
     public DataSource spjdbsDataSource(){
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }

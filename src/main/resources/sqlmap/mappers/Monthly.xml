@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Monthly">
+
+    <select id="getPublishedList" parameterType="hashMap" resultType="Map">
+        select
+            yymm as yy_mm,
+            wk as w_k
+        from (
+        select
+            yyyymm_key::integer as yymm,
+            null as wk
+        from lrn_dsb.ds_ag_stud_att_sts_mly
+        where yyyymm_key = 202210
+            and stud_key = 1985755
+        union all
+        select
+            left(yyyymmw_key::text,6)::integer as yymm,
+            right(yyyymmw_key::text,1) as wk
+        from lrn_dsb.ds_ag_stud_att_sts_wly
+        where yyyymmw_key in (select yyyymmw_key from lrndmt.mt_dm_wk_dt where yyyymm_key=202210)
+            and stud_key = 1985755
+            ) a
+        order by wk desc nulls first
+    </select>
+
+</mapper>
