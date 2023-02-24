@@ -2,16 +2,17 @@ package com.iscreamedu.analytics.homelearn.api.common.mapper;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class CommonMapperSpjDbs extends SqlSessionDaoSupport {
 
-    @Resource
+    @Autowired
+    @Qualifier("spjdbsSessionFactory")
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory){
         super.setSqlSessionFactory(sqlSessionFactory);
     }

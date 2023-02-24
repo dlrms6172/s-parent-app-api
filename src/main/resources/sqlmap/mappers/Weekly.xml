@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="home">
+<mapper namespace="Weekly">
+
+    <select id="getWeeklyData" parameterType="hashMap" resultType="Map">
+        select
+            202302 as yymm,
+            3 as wk,
+            st.stud_key ,
+            round(ex.tiltrm_exec_rt*100)::integer as wk_ex_rt,
+            ex.tiltrm_lrn_exec_cnt as total_lrn_ex_cnt,
+            ex.plan_lrn_cnt as plan_cnt,
+            round(att.login_rt*100) as wk_att_rt,
+            att.plan_dt_att_dd as att_day_cnt,
+            att.plan_dt_dd as plan_day_cnt,
+            ex.eqtrm_pre_lrn_exec_cnt as b_lrn_ex_cnt,
+            ex.intm_lrn_exec_cnt as lrn_ex_cnt,
+            ex.eqtrm_dely_lrn_exec_cnt as d_lrn_ex_cnt,
+            (ex.plan_lrn_cnt - ex.tiltrm_lrn_exec_cnt) as n_lrn_ex_cnt,
+            sd.fnsh_add_lrn_cnt as a_lrn_ex_cnt,
+            (select string_agg(UPPER(substring(dt.day_en,0,3)),',') from lrndmt.mt_dm_dt as dt where yyyymmw_key = 2023023) as day_sp,
+            (select string_agg(item_nm,',' order by grp.grp_item_key) from lrn_dsb.ds_dm_grp_item as grp where ssvc_akey = st.ssvc_akey and grp.grp_item_key between 4401 and 4412) as subj_sp
+        from lrndmt.mt_dm_stud as st
+        left outer join lrn_dsb.ds_ag_lrn_plan_exec_sts_wly as ex on ex.stud_key = st.stud_key and ex.yyyymmw_key = 2023023 and ex.grp_item_key = 4
+        left outer join lrn_dsb.ds_ag_stud_att_sts_wly as att on att.stud_key = st.stud_key and att.yyyymmw_key = 2023023
+        left outer join lrn_dsb.ds_ag_lrn_use_sts_wly as sd on sd.stud_key = st.stud_key and sd.yyyymmw_key = 2023023 and sd.grp_item_key = 4
+        where 1=1
+            and st.stud_key = 1985755
+            and st.ssvc_akey = 4
+    </select>
 
 </mapper>

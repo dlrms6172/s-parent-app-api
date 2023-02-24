@@ -9,13 +9,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+@Configuration
 public class DataSourceConfigSpjDbs {
 
     //dataSource 생성
-    @Bean(name = "spjdbsDataSource")
+    @Bean(name = "spjdbsDatasource")
     @ConfigurationProperties("spring.datasource.hikari.spjdbs")
     public DataSource spjdbsDataSource(){
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
@@ -23,13 +25,13 @@ public class DataSourceConfigSpjDbs {
 
     //sqlSessionFactory 생성
     @Bean(name = "spjdbsSessionFactory")
-    public SqlSessionFactory spjdbsSessionFactory(@Qualifier("spjdbsDataSource") DataSource spjdbsDataSource, ApplicationContext applicationContext) throws Exception {
+    public SqlSessionFactory spjdbsSessionFactory(@Qualifier("spjdbsDatasource") DataSource spjdbsDataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 
         //datsource설정
         factoryBean.setDataSource(spjdbsDataSource);
         //mapper위치
-        factoryBean.setTypeAliasesPackage("");
+        factoryBean.setTypeAliasesPackage("com.iscreamedu.analytics.homelearn.api.common.mapper");
         //mybatis설정
         factoryBean.setConfigLocation(applicationContext.getResource("classpath:/sqlmap/sql-mapper-config.xml"));
         //mapper_xml 위치

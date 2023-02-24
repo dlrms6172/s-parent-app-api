@@ -9,7 +9,6 @@
 
     <typeAliases>
         <typeAlias alias="hashMap" type="java.util.HashMap"/>
-        <typeAlias alias="resultMap" type="com.iscreamedu.analytics.homelearn.api.common.mapper.ResultMap"/>
     </typeAliases>
 
     <typeHandlers>
